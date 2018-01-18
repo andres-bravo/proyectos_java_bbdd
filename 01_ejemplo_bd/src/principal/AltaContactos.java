@@ -9,7 +9,7 @@ public class AltaContactos {
 
 	public static void main(String[] args) {
 		//creamos conexion a la BBDD
-		Connection cn;
+		Connection cn=null;
 		try {
 			cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda", "root", "root");
 			String sql = "Insert into contactos(nombre,email,telefono) values('eclipse','eclipse@gmail.com',3333)";
@@ -18,9 +18,21 @@ public class AltaContactos {
 			st.execute(sql);
 			cn.close();
 			System.out.println("Contacto añadido.");
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		finally {
+			//cierre conexión
+			try {
+				if(cn!=null) {
+					cn.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }
