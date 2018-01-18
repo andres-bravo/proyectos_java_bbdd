@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
+
+
 
 public class GestionAgenda {
 	public void alta(String nombre, String email, int telefono) {
@@ -39,6 +42,21 @@ public class GestionAgenda {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+	}
+	private void queryPrepStatement(String nombre, String email, int tel) {
+		//Query con PreparedStatement y try con recursos
+		try(Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda", "root", "root")){
+			String sql="insert into contactos(nombre,email,telefono) values(?,?,?)";
+			PreparedStatement ps= cn.prepareStatement(sql);
+			ps.setString(1, nombre);
+			ps.setString(2, email);
+			ps.setInt(3, tel);
+			ps.execute();
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
