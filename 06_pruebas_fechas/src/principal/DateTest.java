@@ -29,6 +29,19 @@ public class DateTest {
 		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, new Locale("es","ES"));
 		System.out.println(df.format(d));
 		
+		//Conversion java.sql.Date en jav.util.Date
+		java.sql.Date fsql = new java.sql.Date(100000000);
+		//java.sql.Date es subclase de java.util.Date por lo que una contiene a la otra y puedo hacer...
+		java.util.Date futil=fsql;
+		
+		//Conversion java.util.Date en java.sql.Date
+		java.util.Date factual=new Date();
+		//Con el constructor heredado de java.util.Date que recibe milisegundos.
+		java.sql.Date fdatos=new java.sql.Date(factual.getTime());
+		
+		
+		
+		
 	}
 
 }
