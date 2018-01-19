@@ -28,6 +28,7 @@ public class DateTest {
 		//java.text.DateFormat
 		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, new Locale("es","ES"));
 		System.out.println(df.format(d));
+		
 	}
 
 }
