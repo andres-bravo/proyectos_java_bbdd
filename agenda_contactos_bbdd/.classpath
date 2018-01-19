@@ -6,6 +6,5 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/manana/AndresBravo/materialcurso/sw/diverMysql/mysql-connector-java-5.1.40.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
