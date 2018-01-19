@@ -1,10 +1,16 @@
 package modelo;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
+
+import beans.Contacto;
 
 
 
@@ -59,6 +65,43 @@ public class GestionAgenda {
 			e.printStackTrace();
 		}
 	}
-
+	public Contacto buscar(String email) {
+		Contacto c=null;
+		//Conexión a la BBDD
+		try(Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda", "root", "root")){
+			String sql="select * from contactos where email='" +email+"'";
+			Statement st = cn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			if (rs.next()) {
+				c = new Contacto(rs.getString("nombre"),rs.getString("email"),rs.getInt("telefono"));
+			}
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return c;
+	}
+	public List<Contacto> recuperarTodos(){
+		//La firma del método es un Interfaz
+		//Yo lo implemento con ArrayList, si mañana quiero otra implementación, no cambio la cabecera del método (firma)
+		//ayuda al desacoplamiento.
+		ArrayList<Contacto> lcon = new ArrayList<>();
+		//Conexión a la BBDD
+		try(Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda", "root", "root")){
+			String sql="select * from contactos";
+			Statement st = cn.createStatement();
+			ResultSet rs = st.executeQuery(sql);			
+			if (!rs.next()) return null;
+			while (rs.next()){
+				Contacto con = new Contacto(rs.getString("nombre"),rs.getString("email"),rs.getInt("telefono"));
+				lcon.add(con);
+			}
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lcon;
+	}
 }
-
