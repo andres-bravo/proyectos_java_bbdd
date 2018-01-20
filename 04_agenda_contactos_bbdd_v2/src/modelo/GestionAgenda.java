@@ -27,7 +27,7 @@ public class GestionAgenda {
 		//creamos conexion a la BBDD
 		Connection cn=null;
 		try {
-			cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda", "root", "root");
+			cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda", "root", "Arras1.2");
 			String sql = query;
 			//creamos objeto Statement y enviamos instruccion SQL
 			Statement st=cn.createStatement();
@@ -39,7 +39,7 @@ public class GestionAgenda {
 			e.printStackTrace();
 		}
 		finally {
-			//cierre conexión
+			//cierre conexiï¿½n
 			try {
 				if(cn!=null) {
 					cn.close();
@@ -52,7 +52,7 @@ public class GestionAgenda {
 	}
 	private void queryPrepStatement(String nombre, String email, int tel) {
 		//Query con PreparedStatement y try con recursos
-		try(Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda", "root", "root")){
+		try(Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda", "root", "Arras1.2")){
 			String sql="insert into contactos(nombre,email,telefono) values(?,?,?)";
 			PreparedStatement ps= cn.prepareStatement(sql);
 			ps.setString(1, nombre);
@@ -67,8 +67,8 @@ public class GestionAgenda {
 	}
 	public Contacto buscar(String email) {
 		Contacto c=null;
-		//Conexión a la BBDD
-		try(Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda", "root", "root")){
+		//Conexiï¿½n a la BBDD
+		try(Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda", "root", "Arras1.2")){
 			String sql="select * from contactos where email='" +email+"'";
 			Statement st = cn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
@@ -83,12 +83,12 @@ public class GestionAgenda {
 		return c;
 	}
 	public List<Contacto> recuperarTodos(){
-		//La firma del método es un Interfaz
-		//Yo lo implemento con ArrayList, si mañana quiero otra implementación, no cambio la cabecera del método (firma)
+		//La firma del mï¿½todo es un Interfaz
+		//Yo lo implemento con ArrayList, si maï¿½ana quiero otra implementaciï¿½n, no cambio la cabecera del mï¿½todo (firma)
 		//ayuda al desacoplamiento.
 		ArrayList<Contacto> lcon = new ArrayList<>();
-		//Conexión a la BBDD
-		try(Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda", "root", "root")){
+		//Conexiï¿½n a la BBDD
+		try(Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda", "root", "")){
 			String sql="select * from contactos";
 			Statement st = cn.createStatement();
 			ResultSet rs = st.executeQuery(sql);			
