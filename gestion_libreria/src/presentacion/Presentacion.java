@@ -22,7 +22,7 @@ public class Presentacion {
 		Venta venta = null;
 		SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy",new Locale("es","ES"));
 		do{
-			System.out.println("1.- AÃ±adir Venta");
+			System.out.println("1.- Añadir Venta");
 			System.out.println("2.- Devolver Ventas");
 			System.out.println("3.- Salir");
 			op=Integer.parseInt(sc.nextLine());
