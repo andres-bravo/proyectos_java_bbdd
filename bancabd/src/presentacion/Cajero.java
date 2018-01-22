@@ -35,7 +35,7 @@ public class Cajero {
 		Scanner sc=new Scanner(System.in);
 		System.out.println("Introduzca Numero de Cuenta");
 		numCuenta = Integer.parseInt(sc.nextLine());
-		SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy",new Locale("es","ES"));
+		SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss",new Locale("es","ES"));
 		do{
 			System.out.println("---------------MENU DE OPCIONES-----------------");
 			System.out.println("1.- Ingresar");
@@ -81,7 +81,8 @@ public class Cajero {
 	    			System.out.println("Saldo: "+ cuenta.getSaldo());
 	    			 */
 		    		List<Movimiento> listaMov = gbancabd.ultimosMovimientos(numCuenta);
-		    		listaMov.forEach(m->System.out.println("Fecha: "+ df.format(m.getFecha())+ " "+m.getOperacion()+" Cantidad: "+ m.getCantidad()));
+		    		listaMov.forEach(m->System.out.println("Fecha: "+ df.format(m.getFecha())+ " "+m.getOperacion()+
+		    						" Cantidad: "+ m.getCantidad()));
 		    		break;
 		    case 5:
 		        	break;

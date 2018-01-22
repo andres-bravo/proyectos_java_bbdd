@@ -16,11 +16,14 @@ import beans.Movimiento;
 public class GestionBancaBd {
 	private Cuenta cuenta;
 	private ArrayList<Movimiento> movimientos;
+	String cadena="jdbc:mysql://localhost:3306/bancabd";
+	String user="root";
+	String pwd="root";
 	private void grabarCuenta(Cuenta c) {
 		//graba Cuenta en BBDD
 		//Conexi�n a la BBDD
-		try(Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/bancabd", "root", "")){ 
-			String sql="insert into cuentas(numeroCuenta,saldo,tipocuenta) values(?,?,?)";
+		try(Connection cn= DriverManager.getConnection(cadena,user,pwd)){ 
+			String sql="update cuentas set (numeroCuenta,saldo,tipocuenta) where  values(?,?,?)";
 			PreparedStatement ps= cn.prepareStatement(sql);
 			ps.setInt(1, c.getNumeroCuenta());
 			ps.setDouble(2, c.getSaldo());
@@ -35,13 +38,14 @@ public class GestionBancaBd {
 	private void grabarMovimiento(Movimiento m){
 		//Graba Movimiento
 		//Conexi�n a la BBDD
-		try(Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/bancabd", "root", "")){
+		try(Connection cn= DriverManager.getConnection(cadena,user,pwd)){
 			java.sql.Date fdatos=new java.sql.Date(m.getFecha().getTime());
+			java.util.Date factual = new Date();
 			String sql="insert into movimientos(idCuenta,cantidad,fecha,operacion) values(?,?,?,?)";
 			PreparedStatement ps= cn.prepareStatement(sql);
 			ps.setInt(1, m.getIdCuenta());
 			ps.setDouble(2, m.getCantidad());
-			ps.setDate(3, fdatos);
+			ps.setTimestamp(3, m.getFecha().getTime());
 			ps.setString(4, m.getOperacion());
 			ps.execute();
 		}
@@ -53,7 +57,7 @@ public class GestionBancaBd {
 	public Cuenta recuperarCuenta(int numCuenta){
 		Cuenta c = null;
 		//Conexion a la BBDD
-		try(Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/bancabd", "root", "")){
+		try(Connection cn= DriverManager.getConnection(cadena,user,pwd)){
 			String sql="select * from cuentas where numeroCuenta="+numCuenta;
 			System.out.println("SQL"+sql);
 			Statement st = cn.createStatement();
@@ -110,8 +114,8 @@ public class GestionBancaBd {
 		//ayuda al desacoplamiento.
 		ArrayList<Movimiento> lmov = new ArrayList<>();
 		//Conexion a la BBDD
-		try(Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/bancabd", "root", "")){
-			String sql="select * from movimientos where idCuenta="+numCuenta+" order by idMovimiento desc limit 5";
+		try(Connection cn= DriverManager.getConnection(cadena,user,pwd)){
+			String sql="select * from movimientos where idCuenta="+numCuenta+" order by idMovimiento DESC limit 5";
 			Statement st = cn.createStatement();
 			ResultSet rs = st.executeQuery(sql);			
 			while (rs.next()){
@@ -123,7 +127,8 @@ public class GestionBancaBd {
 				DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, new Locale("es","ES"));
 				System.out.println(df.format(rs.getDate("fecha")));*/
 				//PREGUNTAR PORQUE NO SE TRAE LA HORA DE LA BBDD
-				Movimiento m = new Movimiento(rs.getInt("idCuenta"), rs.getString("operacion"), rs.getDouble("cantidad"), rs.getDate("fecha"));
+				Movimiento m = new Movimiento(rs.getInt("idCuenta"), rs.getString("operacion"), 
+											rs.getDouble("cantidad"), rs.getDate("fecha"));
 				lmov.add(m);
 			}
 		}
