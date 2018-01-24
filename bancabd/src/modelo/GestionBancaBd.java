@@ -1,5 +1,8 @@
 package modelo;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,9 +19,37 @@ import beans.Movimiento;
 public class GestionBancaBd {
 	private Cuenta cuenta;
 	private ArrayList<Movimiento> movimientos;
+	/*
 	String cadena="jdbc:mysql://localhost:3306/bancabd";
 	String user="root";
-	String pwd="root";
+	String pwd="root";*/
+	private String cadena,user,pwd;
+	public GestionBancaBd() {
+		String fichero = "/Users/abravo/git/proyectos_java_bbdd/bancabd/src/config/conexion.txt";
+		try(FileReader fr = new FileReader(fichero);
+				BufferedReader bf = new BufferedReader(fr)) {
+			//Manera Cl�sica
+			String s;
+			System.out.println("Entro en constructor.");
+			while ((s=bf.readLine())!=null){
+				//System.out.println(s);
+				if (s.contains("user")) {
+					user = s.substring(s.indexOf("|")+1);
+				}
+				else if (s.contains("pwd")){
+					pwd = s.substring(s.indexOf("|")+1);
+				}
+				else if (s.contains("conexion")) {
+					cadena = s.substring(s.indexOf("|")+1);;
+				}
+			}
+				//Con Streams
+				//bf.lines().forEach(s->System.out.println(s));
+		}	
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
 	private void grabarCuenta(Cuenta c) {
 		//graba Cuenta en BBDD
 		//Conexi�n a la BBDD
@@ -45,7 +76,7 @@ public class GestionBancaBd {
 			PreparedStatement ps= cn.prepareStatement(sql);
 			ps.setInt(1, m.getIdCuenta());
 			ps.setDouble(2, m.getCantidad());
-			ps.setTimestamp(3, m.getFecha().getTime());
+			ps.setTimestamp(3, new java.sql.Timestamp(m.getFecha().getTime()));
 			ps.setString(4, m.getOperacion());
 			ps.execute();
 		}
@@ -140,8 +171,9 @@ public class GestionBancaBd {
 	}
 
 	public static void main(String[] args) {
-
-
+		System.out.println("Llamo a constructor");
+		GestionBancaBd gbd = new GestionBancaBd();
+		System.out.println(gbd.cadena+" "+gbd.user+" "+ gbd.pwd);
 	}
 
 }
