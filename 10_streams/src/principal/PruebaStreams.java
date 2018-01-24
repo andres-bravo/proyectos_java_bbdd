@@ -35,6 +35,10 @@ public class PruebaStreams {
 		Stream<Integer> numeros2=Stream.of(4,8,2,43,3,8,9,0,2,6,7);
 		System.out.println(numeros2.anyMatch(n->(n>10 && n%2==0)));
 		
+		//
+		
+		
+		
 		
 		
 	}
