@@ -25,7 +25,7 @@ public class GestionBancaBd {
 	String pwd="root";*/
 	private String cadena,user,pwd;
 	public GestionBancaBd() {
-		String fichero = "/Users/abravo/git/proyectos_java_bbdd/bancabd/src/config/conexion.txt";
+		String fichero = "C:\\Users\\manana\\git\\bancabd\\src\\config\\conexion.txt";
 		try(FileReader fr = new FileReader(fichero);
 				BufferedReader bf = new BufferedReader(fr)) {
 			//Manera Cl�sica
