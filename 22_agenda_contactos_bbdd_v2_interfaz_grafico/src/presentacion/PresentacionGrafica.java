@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 
 import beans.Contacto;
 import modelo.GestionAgenda;
+import presentacion.adaptadores.AdaptadorCombo;
 
 public class PresentacionGrafica extends JFrame {
 
@@ -89,9 +91,27 @@ public class PresentacionGrafica extends JFrame {
 		btnSalir.setBounds(166, 218, 89, 23);
 		contentPane.add(btnSalir);
 		
-
+		JButton btnLista = new JButton("ListaContactos");
+		btnLista.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JVContactos v = new JVContactos();
+			}
+		});
+		btnLista.setBounds(273, 218, 89, 23);
+		contentPane.add(btnLista);
 		
+		JComboBox cbContactos = new JComboBox();
+		cbContactos.setBounds(196, 36, 178, 23);
+		contentPane.add(cbContactos);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBounds(285, 11, 89, 23);
+		contentPane.add(btnEliminar);
+		
+		//Carga del combo
+		GestionAgenda agenda = new GestionAgenda();
+		AdaptadorCombo<Contacto> adp = new AdaptadorCombo<>(agenda.recuperarTodos());
+		cbContactos.setModel(adp);
 
 	}
-
 }

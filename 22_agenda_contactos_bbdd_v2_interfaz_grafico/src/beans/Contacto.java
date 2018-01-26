@@ -27,4 +27,7 @@ public class Contacto {
 		this.email = email;
 		this.telefono = telefono;
 	}
+	public String toString() {
+		return nombre;
+	}
 }
