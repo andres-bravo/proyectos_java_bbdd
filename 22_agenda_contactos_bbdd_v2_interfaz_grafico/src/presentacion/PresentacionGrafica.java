@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -118,29 +120,40 @@ public class PresentacionGrafica extends JFrame {
 				//y le indicamos lo que tiene que mostrar
 				JLabel lb=new JLabel();
 				if(arg1!=null) {
-					lb.setText(arg1.getNombre());
+					lb.setText(arg1.getEmail());
 				}
 				return lb;
 			}		
+		});
+		
+		//programamos evento de recepcion de foco en la lista
+		//y en ese evento, programamos la carga de datos en la misma
+		cbContactos.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent arg0) {				
+			}
+			
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				//Carga del combo, se refresca cada vez que 
+				GestionAgenda agenda = new GestionAgenda();
+				AdaptadorCombo<Contacto> adp = new AdaptadorCombo<>(agenda.recuperarTodos());
+				cbContactos.setModel(adp);				
+			}
 		});
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				Contacto c = (Contacto)cbContactos.getSelectedItem();
 				GestionAgenda agenda=new GestionAgenda();
-				agenda.eliminar(c.getEmail());
-				//recargamos el combobox con los contactos
-				AdaptadorCombo<Contacto> adp = new AdaptadorCombo<>(agenda.recuperarTodos());
-				cbContactos.setModel(adp);				
+				agenda.eliminar(c.getEmail());				
 			}
 		});
 		btnEliminar.setBounds(285, 11, 89, 23);
 		contentPane.add(btnEliminar);
 		
-		//Carga del combo
-		GestionAgenda agenda = new GestionAgenda();
-		AdaptadorCombo<Contacto> adp = new AdaptadorCombo<>(agenda.recuperarTodos());
-		cbContactos.setModel(adp);
+
 
 	}
 }
