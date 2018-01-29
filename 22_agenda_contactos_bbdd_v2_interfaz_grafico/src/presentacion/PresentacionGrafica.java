@@ -1,5 +1,6 @@
 package presentacion;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,8 +9,10 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 
 import beans.Contacto;
@@ -100,11 +103,37 @@ public class PresentacionGrafica extends JFrame {
 		btnLista.setBounds(273, 218, 89, 23);
 		contentPane.add(btnLista);
 		
-		JComboBox cbContactos = new JComboBox();
+		JComboBox<Contacto> cbContactos = new JComboBox();
 		cbContactos.setBounds(196, 36, 178, 23);
 		contentPane.add(cbContactos);
-		
+		//Configurar modo de visualización
+		//setRenderer especifica como tiene que transfomar los datos para visualizarlos
+		//Implemento con una clase anonima el interfaz ListCellRenderer y el método getListCellRendererComponent
+		cbContactos.setRenderer(new ListCellRenderer<Contacto>() {
+
+			@Override
+			public Component getListCellRendererComponent(JList<? extends Contacto> arg0, Contacto arg1, int arg2, boolean arg3,
+					boolean arg4) {
+				//construimos un JLabel para cada elemento de la lista
+				//y le indicamos lo que tiene que mostrar
+				JLabel lb=new JLabel();
+				if(arg1!=null) {
+					lb.setText(arg1.getNombre());
+				}
+				return lb;
+			}		
+		});
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				Contacto c = (Contacto)cbContactos.getSelectedItem();
+				GestionAgenda agenda=new GestionAgenda();
+				agenda.eliminar(c.getEmail());
+				//recargamos el combobox con los contactos
+				AdaptadorCombo<Contacto> adp = new AdaptadorCombo<>(agenda.recuperarTodos());
+				cbContactos.setModel(adp);				
+			}
+		});
 		btnEliminar.setBounds(285, 11, 89, 23);
 		contentPane.add(btnEliminar);
 		
